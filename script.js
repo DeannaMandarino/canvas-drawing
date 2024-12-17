@@ -37,10 +37,7 @@ function draw(event) {
   lastY = event.offsetY;
 
   // Increment hue for color variation, reset at 360
-  hue++;
-  if (hue >= 360) {
-    hue = 0;
-  }
+  hue = (hue + 1) % 360;
 
   // Dynamically adjust the line width
   if (ctx.lineWidth >= 100 || ctx.lineWidth <= 20) {
@@ -48,14 +45,10 @@ function draw(event) {
   }
 
   // Increase or decrease the line width based on the direction
-  if (direction) {
-    ctx.lineWidth++;
-  }
-  else {
-    ctx.lineWidth--;
-  }
+  ctx.lineWidth = direction ? ctx.lineWidth + 1 : ctx.lineWidth - 1;
 }
 
+// Event listeners for computers
 canvas.addEventListener('mousedown', (event) => {
   isDrawing = true;
   lastX = event.offsetX;
@@ -71,7 +64,10 @@ canvas.addEventListener('touchstart', (event) => {
   lastX = event.offsetX;
   lastY = event.offsetY;
 });
-canvas.addEventListener('touchmove', draw);
+canvas.addEventListener('touchmove', (event) => {
+  event.preventDefault(); // Prevent scrolling or zooming during touch
+  draw(event);
+});
 canvas.addEventListener('touchend', () => isDrawing = false);
 canvas.addEventListener('touchcancel', () => isDrawing = false); // Stop drawing if touch is interrupted (e.g., notification)
 
