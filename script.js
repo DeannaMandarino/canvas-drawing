@@ -19,9 +19,27 @@ let lastY = 0;
 let hue = 0;
 let direction = true;
 
+// A helper function that gets the position of the mouse or touch on the canvas
+function getPosition(event) {
+  // Get the area of the canvas on the screen (its size and position)
+  const rect = canvas.getBoundingClientRect();
+
+  // Check if the event is a touch event (for mobile devices)
+  // If it's a touch event, get the touch's position using clientX and clientY
+  // If it's a mouse event, get the position using offsetX and offsetY
+  const x = event.touches ? event.touches[0].clientX : event.offsetX;
+  const y = event.touches ? event.touches[0].clientY : event.offsetY;
+
+  // Return the position of the event relative to the canvas, adjusting for the canvas's position on the screen
+  return { x: x - rect.left, y: y - rect.top };
+}
+
 // Draw function to handle the drawing logic
 function draw(event) {
   if(!isDrawing) return; // exit if mouse is not pressed
+
+  // Get the position of the mouse/touch
+  const { x, y } = getPosition(event);
 
   // Set stroke color dynamically based on hue
   ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
@@ -29,12 +47,12 @@ function draw(event) {
   // Begin a new path and draw from the last position to the current position
   ctx.beginPath();
   ctx.moveTo(lastX, lastY); // start from
-  ctx.lineTo(event.offsetX, event.offsetY); // go to
+  ctx.lineTo(x, y); // go to
   ctx.stroke();
 
   // Update the last known position
-  lastX = event.offsetX;
-  lastY = event.offsetY;
+  lastX = x;
+  lastY = y;
 
   // Increment hue for color variation, reset at 360
   hue = (hue + 1) % 360;
@@ -51,8 +69,9 @@ function draw(event) {
 // Event listeners for computers
 canvas.addEventListener('mousedown', (event) => {
   isDrawing = true;
-  lastX = event.offsetX;
-  lastY = event.offsetY;
+  const { x, y } = getPosition(event);
+  lastX = x;
+  lastY = y;
 });
 canvas.addEventListener('mousemove', draw); // Continuously draw while mouse is moving
 canvas.addEventListener('mouseup', () => isDrawing = false); // Stop drawing when mouse is released
@@ -62,8 +81,9 @@ canvas.addEventListener('mouseout', () => isDrawing = false); // Stop drawing wh
 canvas.addEventListener('touchstart', (event) => {
   event.preventDefault(); // Prevent scrolling or zooming during touch
   isDrawing = true;
-  lastX = event.offsetX;
-  lastY = event.offsetY;
+  const { x, y } = getPosition(event);
+  lastX = x;
+  lastY = y;
 });
 canvas.addEventListener('touchmove', (event) => {
   event.preventDefault(); // Prevent scrolling or zooming during touch
