@@ -11,6 +11,7 @@ let isDrawing = false;
 let lastX = 0;
 let lastY = 0;
 let hue = 0;
+let direction = true;
 
 function draw(event) {
   if(!isDrawing) return; // stop the function from running when they are not moused down
@@ -28,6 +29,16 @@ function draw(event) {
   hue++;
   if (hue >= 360) {
     hue = 0;
+  }
+
+  if (ctx.lineWidth >= 100 || ctx.lineWidth <= 20) {
+    direction = !direction;
+  }
+  if (direction) {
+    ctx.lineWidth++;
+  }
+  else {
+    ctx.lineWidth--;
   }
 }
 
