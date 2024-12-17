@@ -65,6 +65,16 @@ canvas.addEventListener('mousemove', draw); // Continuously draw while mouse is 
 canvas.addEventListener('mouseup', () => isDrawing = false); // Stop drawing when mouse is released
 canvas.addEventListener('mouseout', () => isDrawing = false); // Stop drawing when mouse leaves canvas
 
+// Event listeners for mobile devices
+canvas.addEventListener('touchstart', (event) => {
+  isDrawing = true;
+  lastX = event.offsetX;
+  lastY = event.offsetY;
+});
+canvas.addEventListener('touchmove', draw);
+canvas.addEventListener('touchend', () => isDrawing = false);
+canvas.addEventListener('touchcancel', () => isDrawing = false); // Stop drawing if touch is interrupted (e.g., notification)
+
 // Resize canvas when the window is resized to keep it full-screen
 window.addEventListener('resize', () => {
   canvas.width = window.innerWidth;
