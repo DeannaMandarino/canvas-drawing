@@ -60,6 +60,7 @@ canvas.addEventListener('mouseout', () => isDrawing = false); // Stop drawing wh
 
 // Event listeners for mobile devices
 canvas.addEventListener('touchstart', (event) => {
+  event.preventDefault(); // Prevent scrolling or zooming during touch
   isDrawing = true;
   lastX = event.offsetX;
   lastY = event.offsetY;
