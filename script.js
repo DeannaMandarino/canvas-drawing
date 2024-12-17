@@ -7,7 +7,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 // Set up the drawing styles for the context
-ctx.strokeStyle = '#000000'; // Initial stroke color
+ctx.strokeStyle = '#ffffff'; // Initial stroke color
 ctx.lineJoin = 'round';
 ctx.lineCap = 'round';
 ctx.lineWidth = 100; // Initial line width
